@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <meta name="description" content="Merge PDFs privately in your browser. Arrange your files, combine them, and download one finished document.">
+  <title>Fold — merge PDFs, beautifully</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 3.75h6l4.25 4.3v11.2A1.75 1.75 0 0 1 15.5 21h-8A1.75 1.75 0 0 1 5.75 19.25v-13.75A1.75 1.75 0 0 1 7.5 3.75Z' stroke='%23262926' stroke-width='1.7'/%3E%3Cpath d='M13 4v4.5h4.5M8.5 12h6.75M8.5 15h6.75' stroke='%23262926' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="drop-overlay" id="dropOverlay" aria-hidden="true">
+    <div class="overlay-inner">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M14 30.5a9 9 0 0 1-.9-17.95A12.5 12.5 0 0 1 37.3 16a7.5 7.5 0 0 1-1.8 14.5H29" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 37V20m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <strong>Drop your PDFs here</strong><span>We will line them up in the order you add them.</span>
+    </div>
+  </div>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Fold home">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3.75h6l4.25 4.3v11.2A1.75 1.75 0 0 1 15.5 21h-8A1.75 1.75 0 0 1 5.75 19.25v-13.75A1.75 1.75 0 0 1 7.5 3.75Z" stroke="currentColor" stroke-width="1.7"/><path d="M13 4v4.5h4.5M8.5 12h6.75M8.5 15h6.75" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <span>fold<span style="color:var(--accent)">.</span></span>
+      </a>
+      <div class="top-actions">
+        <div class="privacy-chip"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5 4 5v4.6c0 3.8 2.55 6.45 6 7.9 3.45-1.45 6-4.1 6-7.9V5l-6-2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m7.4 9.8 1.8 1.8 3.6-3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Private by design</div>
+        <button class="theme-button" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme"><svg id="themeIcon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.2 12.3A6.7 6.7 0 0 1 7.7 3.8a6.8 6.8 0 1 0 8.5 8.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Your files stay yours</div>
+        <h1>Everything in order.<br><em>One perfect PDF.</em></h1>
+        <p class="hero-copy">Bring your PDFs together in a few clicks. Arrange the pages just how you like them, then download your finished file — privately, right in your browser.</p>
+      </section>
+
+      <section class="workspace" aria-label="PDF merger">
+        <div class="main-column">
+          <section class="card upload-card" aria-label="Add PDF files">
+            <div class="dropzone" id="dropzone" role="region" aria-label="Drop PDF files here">
+              <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14.5v3.25A2.25 2.25 0 0 0 7.25 20h9.5A2.25 2.25 0 0 0 19 17.75V14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <p class="drop-title">Drop your PDFs to get started</p>
+              <p class="drop-hint">or choose them from your device</p>
+              <input class="sr-only" id="fileInput" type="file" accept=".pdf,application/pdf" multiple>
+              <button class="choose-button" id="chooseButton" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Choose files</button>
+              <div class="file-limit">PDF files only · up to 25 at a time</div>
+            </div>
+            <div class="alerts" id="alerts" aria-live="polite" aria-atomic="false"></div>
+          </section>
+
+          <section class="card list-card" aria-label="Selected files">
+            <div class="list-head">
+              <div class="list-heading"><h2>Your files</h2><span class="count-pill" id="fileCount">0 / 25 files</span></div>
+              <span class="list-caption">Drag to arrange your final PDF</span>
+            </div>
+            <div class="files-list" id="filesList" aria-live="polite"></div>
+          </section>
+        </div>
+
+        <aside class="side-column" aria-label="Merge summary">
+          <section class="card summary-card">
+            <div class="summary-header"><h2>Merge overview</h2><span class="summary-spark"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m10 2 1.6 5.1L17 9l-5.4 1.8L10 16l-1.6-5.2L3 9l5.4-1.9L10 2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/><path d="m16 13 .8 2.2L19 16l-2.2.8L16 19l-.8-2.2L13 16l2.2-.8L16 13Z" fill="currentColor"/></svg></span></div>
+            <div class="summary-hero"><div><div class="summary-big" id="summaryFiles">0<small>files</small></div><div class="summary-tag">ready to come together</div></div><div class="summary-stack" aria-hidden="true"><svg viewBox="0 0 32 38" fill="none"><path d="M7 2.5h12l8 8v23A2.5 2.5 0 0 1 24.5 36h-15A2.5 2.5 0 0 1 7 33.5v-28A3 3 0 0 1 10 2.5Z" stroke="currentColor" stroke-width="1.6"/></svg><svg viewBox="0 0 32 38" fill="none"><path d="M7 2.5h12l8 8v23A2.5 2.5 0 0 1 24.5 36h-15A2.5 2.5 0 0 1 7 33.5v-28A3 3 0 0 1 10 2.5Z" stroke="currentColor" stroke-width="1.6"/></svg><svg viewBox="0 0 32 38" fill="none"><path d="M7 2.5h12l8 8v23A2.5 2.5 0 0 1 24.5 36h-15A2.5 2.5 0 0 1 7 33.5v-28A3 3 0 0 1 10 2.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M12 18h10M12 22h10M12 26h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+            <div class="stats">
+              <div class="stat"><div class="stat-label"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v12M11.5 4.5C11.5 3.4 10 2.5 8 2.5S4.5 3.4 4.5 4.5 6 6.5 8 6.5s3.5.9 3.5 2S10 10.5 8 10.5s-3.5.9-3.5 2S6 14.5 8 14.5s3.5-.9 3.5-2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Total size</div><div class="stat-value" id="totalSize">0 B</div></div>
+              <div class="stat"><div class="stat-label"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 2.25h5.5L13 5.8v7.95a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-width="1.2"/><path d="M9 2.5v3.8h3.7M5.5 9h5M5.5 11.4h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Pages</div><div class="stat-value" id="totalPages">0</div></div>
+            </div>
+            <button class="primary-button" id="mergeButton" type="button" disabled><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 5h12M4 10h12M4 15h12M7.5 2v6M12.5 7v6M7.5 12v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span id="mergeButtonText">Merge PDFs</span></button>
+            <div class="progress-wrap" id="progressWrap" aria-live="polite"><div class="progress-copy"><strong id="progressLabel">Preparing your PDFs…</strong><span id="progressPercent">0%</span></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div></div>
+            <div class="success-panel" id="successPanel"><svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="m5.5 9 2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="successText">Your merged PDF is ready to download.</span></div>
+            <button class="download-button" id="downloadButton" type="button" style="display:none;margin-top:10px"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3.5v8m0 0 3-3m-3 3-3-3M4 13v2.25A1.75 1.75 0 0 0 5.75 17h8.5A1.75 1.75 0 0 0 16 15.25V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download merged PDF</span></button>
+          </section>
+          <div class="privacy-note"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5 4 5v4.6c0 3.8 2.55 6.45 6 7.9 3.45-1.45 6-4.1 6-7.9V5l-6-2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m7.4 9.8 1.8 1.8 3.6-3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p><strong>Your PDFs never leave this device.</strong><br>Files are read and merged locally in your browser. Nothing is uploaded.</p></div>
+        </aside>
+      </section>
+    </main>
+    <footer class="footer"><span class="footer-mark"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v12M4 5.2h8M4.8 2.7 3 5.2l1.8 2.5M11.2 8.3 13 10.8l-1.8 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>A little more order, one PDF at a time.</span><span>Made with love in India.</span></footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="app.js"></script>
+</body>
+</html>
